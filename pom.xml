@@ -155,7 +155,7 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<configuration>
 					<processTypes>
-						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* TodoApplication</web>
 					</processTypes>
 				</configuration>
 			</plugin>
