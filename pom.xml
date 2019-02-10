@@ -14,104 +14,6 @@
 	<name>todo</name>
 	<description>Demo project for Spring Boot</description>
 
-	<properties>
-		<java.version>1.8</java.version>
-		<frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
-		<node.version>v8.12.0</node.version>
-		<yarn.version>v1.12.1</yarn.version>
-	</properties>
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<spring.profiles.active>dev</spring.profiles.active>
-			</properties>
-		</profile>
-		<profile>
-			<id>prod</id>
-			<build>
-				<plugins>
-					<plugin>
-						<artifactId>maven-resources-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>copy-resources</id>
-								<phase>process-classes</phase>
-								<goals>
-									<goal>copy-resources</goal>
-								</goals>
-								<configuration>
-									<outputDirectory>${basedir}/target/classes/static</outputDirectory>
-									<resources>
-										<resource>
-											<directory>app/build</directory>
-										</resource>
-									</resources>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>com.github.eirslett</groupId>
-						<artifactId>frontend-maven-plugin</artifactId>
-						<version>${frontend-maven-plugin.version}</version>
-						<configuration>
-							<workingDirectory>app</workingDirectory>
-						</configuration>
-						<executions>
-							<execution>
-								<id>install node</id>
-								<goals>
-									<goal>install-node-and-yarn</goal>
-								</goals>
-								<configuration>
-									<nodeVersion>${node.version}</nodeVersion>
-									<yarnVersion>${yarn.version}</yarnVersion>
-								</configuration>
-							</execution>
-							<execution>
-								<id>yarn install</id>
-								<goals>
-									<goal>yarn</goal>
-								</goals>
-								<phase>generate-resources</phase>
-							</execution>
-							<execution>
-								<id>yarn test</id>
-								<goals>
-									<goal>yarn</goal>
-								</goals>
-								<phase>test</phase>
-								<configuration>
-									<arguments>test</arguments>
-									<environmentVariables>
-										<CI>true</CI>
-									</environmentVariables>
-								</configuration>
-							</execution>
-							<execution>
-								<id>yarn build</id>
-								<goals>
-									<goal>yarn</goal>
-								</goals>
-								<phase>compile</phase>
-								<configuration>
-									<arguments>build</arguments>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-			<properties>
-				<spring.profiles.active>prod</spring.profiles.active>
-			</properties>
-		</profile>
-	</profiles>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -150,21 +52,62 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!--<plugin>-->
-				<!--<groupId>com.heroku.sdk</groupId>-->
-				<!--<artifactId>heroku-maven-plugin</artifactId>-->
-				<!--<configuration>-->
-					<!--<appName>todo'</appName>-->
-					<!--<includeTarget>false</includeTarget>-->
-					<!--<includes>-->
-						<!--<include>${project.build.directory}/${project.build.finalName}.jar</include>-->
-					<!--</includes>-->
-					<!--<jdkVersion>${java.version}</jdkVersion>-->
-					<!--<processTypes>-->
-						<!--<web>java $JAVA_OPTS -jar ${project.build.directory}/${project.build.finalName}.jar</web>-->
-					<!--</processTypes>-->
-				<!--</configuration>-->
-			<!--</plugin>-->
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<configuration>
+					<workingDirectory>app</workingDirectory>
+					<installDirectory>target</installDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+						<configuration>
+							<nodeVersion>v8.9.4</nodeVersion>
+							<npmVersion>5.6.0</npmVersion>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>install</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<copy todir="${project.build.directory}/classes/public">
+									<fileset dir="${project.basedir}/app/build"/>
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>
