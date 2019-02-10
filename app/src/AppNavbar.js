@@ -26,7 +26,7 @@ export default class AppNavbar extends Component {
                             <NavLink href="https://www.linkedin.com/in/rodrigoavalente/">LinkedIn</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="#">GitHub</NavLink>
+                            <NavLink href="https://github.com/rodrigoavalente/todo">GitHub</NavLink>
                         </NavItem>
                     </Nav>
                 </Collapse>
