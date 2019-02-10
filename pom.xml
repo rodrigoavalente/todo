@@ -154,8 +154,14 @@
 				<!--<groupId>com.heroku.sdk</groupId>-->
 				<!--<artifactId>heroku-maven-plugin</artifactId>-->
 				<!--<configuration>-->
+					<!--<appName>todo'</appName>-->
+					<!--<includeTarget>false</includeTarget>-->
+					<!--<includes>-->
+						<!--<include>${project.build.directory}/${project.build.finalName}.jar</include>-->
+					<!--</includes>-->
+					<!--<jdkVersion>${java.version}</jdkVersion>-->
 					<!--<processTypes>-->
-						<!--<web>java $JAVA_OPTS -cp target/classes:target/dependency/* TodoApplication</web>-->
+						<!--<web>java $JAVA_OPTS -jar ${project.build.directory}/${project.build.finalName}.jar</web>-->
 					<!--</processTypes>-->
 				<!--</configuration>-->
 			<!--</plugin>-->
